@@ -1,74 +1,43 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-
-using namespace std;
+#include <SFML/Graphics.hpp>
 
 int main()
 {
-    // Set up variables for the player and the computer car positions
-    int playerPos = 0;
-    int computerPos = 0;
+    // Create the window
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Racing Game");
 
-    // Set up variables for the track length and the finish line position
-    int trackLength = 20;
-    int finishLine = trackLength - 1;
+    // Load the car texture
+    sf::Texture carTexture;
+    carTexture.loadFromFile("car.png");
 
-    // Set up variables for the player's and computer's moves
-    int playerMove, computerMove;
+    // Create the car sprite
+    sf::Sprite carSprite(carTexture);
+    carSprite.setPosition(400, 500);
 
-    // Seed the random number generator
-    srand(time(NULL));
-
-    // Loop until someone crosses the finish line
-    while (playerPos < finishLine && computerPos < finishLine)
+    // Game loop
+    while (window.isOpen())
     {
-        // Get the player's move
-        cout << "Enter your move (1-3): ";
-        cin >> playerMove;
-
-        // Generate the computer's move
-        computerMove = rand() % 3 + 1;
-
-        // Update the player and computer positions
-        playerPos += playerMove;
-        computerPos += computerMove;
-
-        // Check for collisions
-        if (playerPos == computerPos)
+        // Handle events
+        sf::Event event;
+        while (window.pollEvent(event))
         {
-            cout << "Collision!" << endl;
-            playerPos -= playerMove;
-            computerPos -= computerMove;
+            if (event.type == sf::Event::Closed)
+                window.close();
         }
 
-        // Print the current positions
-        for (int i = 0; i < trackLength; i++)
-        {
-            if (i == playerPos)
-            {
-                cout << "P";
-            }
-            else if (i == computerPos)
-            {
-                cout << "C";
-            }
-            else
-            {
-                cout << "-";
-            }
-        }
-        cout << endl;
-    }
+        // Move the car
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            carSprite.move(-5, 0);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            carSprite.move(5, 0);
 
-    // Check who won
-    if (playerPos >= finishLine)
-    {
-        cout << "You win!" << endl;
-    }
-    else
-    {
-        cout << "You lose!" << endl;
+        // Clear the window
+        window.clear(sf::Color::White);
+
+        // Draw the car
+        window.draw(carSprite);
+
+        // Display the window
+        window.display();
     }
 
     return 0;
