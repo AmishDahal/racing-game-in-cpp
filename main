@@ -1,0 +1,75 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+int main()
+{
+    // Set up variables for the player and the computer car positions
+    int playerPos = 0;
+    int computerPos = 0;
+
+    // Set up variables for the track length and the finish line position
+    int trackLength = 20;
+    int finishLine = trackLength - 1;
+
+    // Set up variables for the player's and computer's moves
+    int playerMove, computerMove;
+
+    // Seed the random number generator
+    srand(time(NULL));
+
+    // Loop until someone crosses the finish line
+    while (playerPos < finishLine && computerPos < finishLine)
+    {
+        // Get the player's move
+        cout << "Enter your move (1-3): ";
+        cin >> playerMove;
+
+        // Generate the computer's move
+        computerMove = rand() % 3 + 1;
+
+        // Update the player and computer positions
+        playerPos += playerMove;
+        computerPos += computerMove;
+
+        // Check for collisions
+        if (playerPos == computerPos)
+        {
+            cout << "Collision!" << endl;
+            playerPos -= playerMove;
+            computerPos -= computerMove;
+        }
+
+        // Print the current positions
+        for (int i = 0; i < trackLength; i++)
+        {
+            if (i == playerPos)
+            {
+                cout << "P";
+            }
+            else if (i == computerPos)
+            {
+                cout << "C";
+            }
+            else
+            {
+                cout << "-";
+            }
+        }
+        cout << endl;
+    }
+
+    // Check who won
+    if (playerPos >= finishLine)
+    {
+        cout << "You win!" << endl;
+    }
+    else
+    {
+        cout << "You lose!" << endl;
+    }
+
+    return 0;
+}
